@@ -5,7 +5,7 @@
 Given the head of a linked list, remove the nth node from the end of the list and return its head.
 Example 1:
 I : head = [1,2,3,4,5], n = 2
-O : [1,2,3,5]
+O : [1,2,3,5] 
 
 Example 2:
 I : head = [1], n = 1
