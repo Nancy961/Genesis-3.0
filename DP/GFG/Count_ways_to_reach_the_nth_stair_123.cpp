@@ -1,36 +1,40 @@
 /* ***********************************************
 * 
  * 
- * Link to question - https://practice.geeksforgeeks.org/problems/count-ways-to-reach-the-nth-stair-1587115620/1
+ * Link to question - https://www.geeksforgeeks.org/count-ways-reach-nth-stair-using-step-1-2-3/
  * 
  * Question :
  * ----------
  * 
- * There are n stairs, a person standing at the bottom wants to reach the top. 
- * The person can climb either 1 stair or 2 stairs at a time. 
- * Count the number of ways, the person can reach the top (order does matter).
+ * A child is running up a staircase with n steps and can hop either 1 step, 2 steps, or 3 steps at a time. 
+ * Implement a method to count how many possible ways the child can run up the stairs.
  * 
  * Example 1:
  * 
  * Input: n = 4
- * Output: 5
+ * Output: 7
  * 
  * Explanation:
  * 
- * You can reach 4th stair in 5 ways. 
- * Way 1: Climb 2 stairs at a time. 
- * Way 2: Climb 1 stair at a time.
- * Way 3: Climb 2 stairs, then 1 stair and then 1 stair.
- * Way 4: Climb 1 stair, then 2 stairs then 1 stair.
- * Way 5: Climb 1 stair, then 1 stair and then 2 stairs.
+ * Below are the seven ways
+ * 1 step + 1 step + 1 step + 1 step
+ * 1 step + 2 step + 1 step
+ * 2 step + 1 step + 1 step 
+ * 1 step + 1 step + 2 step
+ * 2 step + 2 step
+ * 3 step + 1 step
+ * 1 step + 3 step
  * 
  * Example 2:
  * 
- * Input:   n = 10
- * Output:  89 
+ * Input:   n = 3
+ * Output:  4
  * 
  * Explanation: 
- * There are 89 ways to reach the 10th stair.
+ * 1 step + 1 step + 1 step
+ * 1 step + 2 step
+ * 2 step + 1 step
+ * 3 step
  * 
  * Your Task:
  * ---------
@@ -56,8 +60,8 @@ class Solution{
 
     private:
 
-        int mem[10005];
-	    int mod = 1000000007;
+    int mem[10005];
+	int mod = 1000000007;
 
     public :
         Solution(){
@@ -70,50 +74,53 @@ class Solution{
         }
 
         // Recursion - Top-down 
-	    // O(2^n) TC - O(n) SC
+        // O(3^n) TC - O(n) SC
         int CountWays (int n){
+            if(n==0) return 1;
             if(n<3) return n;
-            return (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
+            return (CountWays(n-1)%mod + CountWays(n-2)%mod + CountWays(n-3)%mod)%mod;
         }
 
 	
         // Recursion with Memoization
-	    // 0(n) TC O(n) SC
+        // 0(n) TC O(n) SC
         int CountWays2 (int n){
-            
+            if(n==0) return 1;
             if(n<3) return n;
             if(!mem[n]){
-                mem[n] = (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
+                mem[n] = (CountWays(n-1)%mod + CountWays(n-2)%mod + CountWays(n-3)%mod)%mod;
             }
             return mem[n];
         }
 
 	
-        // Bottom up with memoization
+        // Iteration with memoization
         // O(n) TC - O(n) SC 
-	
+        
         int CountWays3 (int n){
             reset_vector();
-	        mem[0] = 0; mem[1] = 1;
+            mem[0] = 1; mem[1] = 1; mem[2] = 2;
 
-            for(int i=1; i<=n; i++){
-               mem[i] = (mem[i-1]%mod + mem[i-2]%mod)%mod;
+            for(int i=3; i<=n; i++){
+                mem[i] = (mem[i-1]%mod + mem[i-2]%mod + mem[i-3]%mod)%mod;
             }
             return mem[n];
         }
 
-        // Bottom up with no extra space
-	    // O(n) TC - O(1) SC 
+        // Iteration with 
+        // O(n) TC - O(1) SC 
         int CountWays4 (int n){
             
-            int a = 0;
+            int a = 1;
             int b = 1;
+            int c = 2;
             int ans = 0;
 
-            for(int i=1; i<=n; i++){
-               	ans = (a%mod + b%mod)%mod;
-		        a = b;
-		        b = ans;
+            for(int i=3; i<=n; i++){
+                ans = (a%mod + b%mod + c%mod)%mod;
+                a = b;
+                b = c;
+                c = ans;
             }
             return ans;
         }
