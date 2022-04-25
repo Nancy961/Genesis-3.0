@@ -57,31 +57,32 @@ class Solution{
     private:
 
         int mem[10005];
-	int mod = 1000000007;
+	    int mod = 1000000007;
 
     public :
         Solution(){
             reset_vector();
         }
 
-  	void reset_vector() {
+        void reset_vector() {
             for(int i=0; i<10005; i++)
-                mem[i] = NULL;
-	}
+                mem[i] = 0;
+        }
 
         // Recursion - Top-down 
-	// O(n) TC - O(2^n) SC
+	    // O(2^n) TC - O(n) SC
         int CountWays (int n){
-            if(n<3) return n;
+            if(n==0) return 1;
+            if(n<2) return n;
             return (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
         }
 
 	
         // Recursion with Memoization
-	// 0(n) TC O(n) SC
+	    // 0(n) TC O(n) SC
         int CountWays2 (int n){
-            
-            if(n<3) return n;
+            if(n==0) return 1;
+            if(n<2) return n;
             if(!mem[n]){
                 mem[n] = (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
             }
@@ -89,31 +90,31 @@ class Solution{
         }
 
 	
-	// Iteration with memoization
-	// O(n) TC - O(n) SC 
+        // Bottom up with memoization
+        // O(n) TC - O(n) SC 
 	
         int CountWays3 (int n){
             reset_vector();
-	    mem[0] = 0; mem[1] = 1;
+	        mem[0] = 1; mem[1] = 1;
 
-            for(int i=1; i<=n; i++){
+            for(int i=2; i<=n; i++){
                mem[i] = (mem[i-1]%mod + mem[i-2]%mod)%mod;
             }
             return mem[n];
         }
 
-        // Iteration with 
-	// O(n) TC - O(1) SC 
+        // Bottom up with no extra space
+	    // O(n) TC - O(1) SC 
         int CountWays4 (int n){
             
-            int a = 0;
+            int a = 1;
             int b = 1;
             int ans = 0;
 
-            for(int i=1; i<=n; i++){
+            for(int i=2; i<=n; i++){
                	ans = (a%mod + b%mod)%mod;
-		a = b;
-		b = ans;
+		        a = b;
+		        b = ans;
             }
             return ans;
         }
