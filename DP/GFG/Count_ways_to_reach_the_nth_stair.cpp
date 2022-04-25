@@ -72,7 +72,8 @@ class Solution{
         // Recursion - Top-down 
 	    // O(2^n) TC - O(n) SC
         int CountWays (int n){
-            if(n<3) return n;
+            if(n==0) return 1;
+            if(n<2) return n;
             return (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
         }
 
@@ -80,8 +81,8 @@ class Solution{
         // Recursion with Memoization
 	    // 0(n) TC O(n) SC
         int CountWays2 (int n){
-            
-            if(n<3) return n;
+            if(n==0) return 1;
+            if(n<2) return n;
             if(!mem[n]){
                 mem[n] = (CountWays(n-1)%mod + CountWays(n-2)%mod)%mod;
             }
@@ -94,9 +95,9 @@ class Solution{
 	
         int CountWays3 (int n){
             reset_vector();
-	        mem[0] = 0; mem[1] = 1;
+	        mem[0] = 1; mem[1] = 1;
 
-            for(int i=1; i<=n; i++){
+            for(int i=2; i<=n; i++){
                mem[i] = (mem[i-1]%mod + mem[i-2]%mod)%mod;
             }
             return mem[n];
@@ -106,11 +107,11 @@ class Solution{
 	    // O(n) TC - O(1) SC 
         int CountWays4 (int n){
             
-            int a = 0;
+            int a = 1;
             int b = 1;
             int ans = 0;
 
-            for(int i=1; i<=n; i++){
+            for(int i=2; i<=n; i++){
                	ans = (a%mod + b%mod)%mod;
 		        a = b;
 		        b = ans;
